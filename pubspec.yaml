@@ -1,0 +1,23 @@
+name: blind_rsa_signatures
+description: >-
+  A Dart implementation of RSA blind signatures based on David Chaum's algorithm.
+  Enables anonymous token issuance and verification where servers can sign messages
+  without being able to link them to specific clients.
+version: 0.1.0
+homepage: https://github.com/grunch/blind_rsa_signatures_dart
+repository: https://github.com/grunch/blind_rsa_signatures_dart
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  pointycastle: ^3.9.1
+  basic_utils: ^5.7.0
+  crypto: ^3.0.3
+
+dev_dependencies:
+  test: ^1.24.0
+  lints: ^4.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
