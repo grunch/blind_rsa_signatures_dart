@@ -11,11 +11,19 @@ import 'options.dart';
 /// This class provides the server-side operation for blind signatures:
 /// - Signing blinded messages from clients
 class SecretKey {
-  /// Create a SecretKey from PEM format string
+  /// Create a SecretKey from PEM format string (supports both PKCS#8 and PKCS#1)
   factory SecretKey.fromPem(String pemKey) {
     try {
-      final RSAPrivateKey basicUtilsKey =
-          CryptoUtils.rsaPrivateKeyFromPemPkcs1(pemKey);
+      RSAPrivateKey basicUtilsKey;
+
+      // Try PKCS#8 format first (PrivateKeyInfo)
+      if (pemKey.contains('BEGIN PRIVATE KEY')) {
+        basicUtilsKey = CryptoUtils.rsaPrivateKeyFromPem(pemKey);
+      } else {
+        // Fall back to PKCS#1 format (RSAPrivateKey)
+        basicUtilsKey = CryptoUtils.rsaPrivateKeyFromPemPkcs1(pemKey);
+      }
+
       final RSAPrivateKey pointyCastleKey = pc.RSAPrivateKey(
         basicUtilsKey.modulus!,
         basicUtilsKey.privateExponent!,
@@ -44,7 +52,7 @@ class SecretKey {
   /// Get the key size in bits
   int get keySize => _key.modulus!.bitLength;
 
-  /// Convert to PEM format
+  /// Convert to PEM format (PKCS#8 - PrivateKeyInfo)
   String toPem() {
     try {
       final RSAPrivateKey basicUtilsKey = RSAPrivateKey(
@@ -53,7 +61,7 @@ class SecretKey {
         _key.p,
         _key.q,
       );
-      return CryptoUtils.encodeRSAPrivateKeyToPemPkcs1(basicUtilsKey);
+      return CryptoUtils.encodeRSAPrivateKeyToPem(basicUtilsKey);
     } catch (e) {
       throw KeyException('Failed to encode RSA private key to PEM', e);
     }

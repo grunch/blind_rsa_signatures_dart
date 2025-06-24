@@ -157,7 +157,7 @@ class KeyPair {
   static String _rsaPublicKeyToPem(pc.RSAPublicKey publicKey) {
     final pc.RSAPublicKey basicUtilsKey =
         RSAPublicKey(publicKey.modulus!, publicKey.exponent!);
-    return CryptoUtils.encodeRSAPublicKeyToPemPkcs1(basicUtilsKey);
+    return CryptoUtils.encodeRSAPublicKeyToPem(basicUtilsKey);
   }
 
   static String _rsaPrivateKeyToPem(pc.RSAPrivateKey privateKey) {
@@ -167,7 +167,7 @@ class KeyPair {
       privateKey.p,
       privateKey.q,
     );
-    return CryptoUtils.encodeRSAPrivateKeyToPemPkcs1(basicUtilsKey);
+    return CryptoUtils.encodeRSAPrivateKeyToPem(basicUtilsKey);
   }
 
   @override
