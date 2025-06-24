@@ -42,14 +42,14 @@ void main() {
         );
       });
 
-      test('should export and import PEM format', () {
+      test('should export and import PEM format (PKCS#8)', () {
         final publicKeyPem = keyPair.publicKeyPem;
         final privateKeyPem = keyPair.privateKeyPem;
 
-        expect(publicKeyPem, contains('-----BEGIN RSA PUBLIC KEY-----'));
-        expect(publicKeyPem, contains('-----END RSA PUBLIC KEY-----'));
-        expect(privateKeyPem, contains('-----BEGIN RSA PRIVATE KEY-----'));
-        expect(privateKeyPem, contains('-----END RSA PRIVATE KEY-----'));
+        expect(publicKeyPem, contains('-----BEGIN PUBLIC KEY-----'));
+        expect(publicKeyPem, contains('-----END PUBLIC KEY-----'));
+        expect(privateKeyPem, contains('-----BEGIN PRIVATE KEY-----'));
+        expect(privateKeyPem, contains('-----END PRIVATE KEY-----'));
 
         final restoredKeyPair = KeyPair.fromPem(
           publicKeyPem: publicKeyPem,
@@ -65,6 +65,8 @@ void main() {
       test('should blind messages successfully', () {
         final message = Uint8List.fromList('test message'.codeUnits);
         final blindingResult = publicKey.blind(null, message, true, options);
+        print(
+            'blindingResult.messageRandomizer: ${blindingResult.messageRandomizer}');
 
         expect(blindingResult.blindMessage, isA<Uint8List>());
         expect(blindingResult.secret, isA<Uint8List>());
