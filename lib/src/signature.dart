@@ -66,11 +66,11 @@ class Signature {
   Uint8List _prepareMessage(
       Uint8List message, Uint8List? messageRandomizer, Options options) {
     if (messageRandomizer != null) {
-      // Combine message with randomizer if present
+      // Combine randomizer with message
       final Uint8List combined =
-          Uint8List(message.length + messageRandomizer.length);
-      combined.setRange(0, message.length, message);
-      combined.setRange(message.length, combined.length, messageRandomizer);
+          Uint8List(messageRandomizer.length + message.length);
+      combined.setRange(0, messageRandomizer.length, messageRandomizer);
+      combined.setRange(messageRandomizer.length, combined.length, message);
       return _hashMessage(combined, options);
     } else {
       return _hashMessage(message, options);
