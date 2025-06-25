@@ -138,7 +138,7 @@ class PublicKey {
 
       // Prepare message for hashing
       final Uint8List messageToHash = messageRandomizer != null
-          ? Uint8List.fromList([...message, ...messageRandomizer])
+          ? Uint8List.fromList([...messageRandomizer, ...message])
           : message;
 
       final Uint8List hashedMessage = _hashMessage(messageToHash, options);
