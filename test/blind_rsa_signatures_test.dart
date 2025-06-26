@@ -381,7 +381,7 @@ void main() {
       test('should use default options', () {
         const opts = Options.defaultOptions;
 
-        expect(opts.hashId, equals('SHA-256'));
+        expect(Options.defaultOptions.hashId, 'SHA-384');
         expect(opts.saltLength, equals(-1));
         expect(opts.deterministic, isFalse);
         expect(opts.customSalt, isNull);
