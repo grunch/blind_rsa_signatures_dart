@@ -12,7 +12,7 @@ class Options {
     this.customSalt,
   });
 
-  /// Default hash function identifier (SHA-256)
+  /// Default hash function identifier (SHA-384)
   static const String defaultHashId = 'SHA-384';
 
   /// Default salt length for PSS padding (auto-detect based on key size)
