@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
+import 'package:pointycastle/api.dart' show Digest;
+import 'package:pointycastle/digests/sha256.dart';
+import 'package:pointycastle/digests/sha384.dart';
+import 'package:pointycastle/digests/sha512.dart';
 
 import 'exceptions.dart';
 import 'options.dart';
@@ -79,19 +82,24 @@ class Signature {
 
   /// Hash message using the specified hash function
   Uint8List _hashMessage(Uint8List message, Options options) {
+    final Digest hashInstance = _getHashDigest(options);
+    hashInstance.reset();
+    hashInstance.update(message, 0, message.length);
+    final Uint8List hashed = Uint8List(hashInstance.digestSize);
+    hashInstance.doFinal(hashed, 0);
+    return hashed;
+  }
+
+  static Digest _getHashDigest(Options options) {
     switch (options.hashId.toUpperCase()) {
       case 'SHA-256':
-        final digest = sha256.convert(message);
-        return Uint8List.fromList(digest.bytes);
-      case 'SHA-1':
-        final digest = sha1.convert(message);
-        return Uint8List.fromList(digest.bytes);
+        return SHA256Digest();
+      case 'SHA-384':
+        return SHA384Digest();
       case 'SHA-512':
-        final digest = sha512.convert(message);
-        return Uint8List.fromList(digest.bytes);
+        return SHA512Digest();
       default:
-        throw VerificationException(
-            'Unsupported hash function: ${options.hashId}');
+        throw VerificationException('Unsupported hash function: ${options.hashId}');
     }
   }
 
