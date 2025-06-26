@@ -201,9 +201,8 @@ final keyPair = KeyPair.fromPem(
 - It prevents certain attacks where the same message is blinded multiple times.
 
 ### Hash Functions
-- Default: SHA-256 (recommended)
-- Supported: SHA-1, SHA-256, SHA-512
-- SHA-1 is deprecated and should be avoided for new applications.
+- Default: SHA-384 (recommended)
+- Supported: SHA-256, SHA-384, SHA-512
 
 ## Performance
 
